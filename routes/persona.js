@@ -30,7 +30,7 @@ app.get('/', (req, res, next) => {
 
     Persona.find({})
         .skip(desde)
-        // .limit()
+        .populate('professional')
         .exec(
 
             (err, persones) => {
@@ -102,6 +102,7 @@ app.put('/:id', mdAutenticacion.verificaToken, (req, res) => {
         persona.poblacio = body.poblacio;
         persona.actiu = body.actiu;
         persona.comunitat = body.comunitat;
+        persona.professional = body.professional;
         
 
 
@@ -203,6 +204,7 @@ app.post('/', mdAutenticacion.verificaToken, (req, res) => {
         poblacio: body.poblacio,
         actiu: body.actiu,
         comunitat: body.comunitat,
+        professional: body.professional,
         data_ultim_informe: ''
 
     });

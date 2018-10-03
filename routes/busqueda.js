@@ -6,6 +6,7 @@ var Persona = require('../models/persona');
 var Informe = require('../models/informe');
 var Usuario = require('../models/usuario');
 var Peticio = require('../models/peticio');
+var CartaCitacio = require('../models/cartacitacio');
 
 
 // ===================
@@ -32,10 +33,13 @@ app.get('/coleccion/:tabla/:busqueda', (req, res) => {
         case 'peticions':
             promesa = buscarPeticions(busqueda, regex);
             break;
+        case 'peticions':
+            promesa = buscarCartes(busqueda, regex);
+            break;
         default:
             return res.status(400).json({
                 ok: false,
-                mensaje: 'Los tipos de busqueda solo son, usuarios, informes y personas y peticions',
+                mensaje: 'Los tipos de busqueda solo son, usuarios, informes y personas y peticions i cartes',
                 error: { message: 'Tipo de tabla coleccion no valido' }
             });
     }
@@ -60,14 +64,16 @@ app.get('/todo/:busqueda', (req, res, next) => {
 
             buscarPersones(busqueda, regex),
             buscarInformes(busqueda, regex),
-            buscarUsuarios(busqueda, regex)
+            buscarUsuarios(busqueda, regex),
+            buscarCartes(busqueda, regex)
         ])
         .then(respuestas => {
             res.status(200).json({
                 ok: true,
                 persones: respuestas[0],
                 medicos: respuestas[1],
-                usuarios: respuestas[2]
+                usuarios: respuestas[2],
+                cartes: respuestas[3]
             });
         });
 
@@ -171,5 +177,34 @@ function buscarPeticions(busqueda, regex) {
 
     });
 }
+
+function buscarCartes(busqueda, regex) {
+
+    return new Promise((resolve, reject) => {
+
+        CartaCitacio.find({})
+            .or([
+                { 'numero': regex },
+                { 'empresa_energetica': regex },
+                { 'empresasubministradora': regex },
+                { 'professional': regex }
+            ])
+            // .populate('informe', 'nombre, data, vigencia, usuario, persona')
+
+        .exec((err, cartes) => {
+
+            if (err) {
+                reject('Error al cargar los cartes', err);
+            } else {
+
+                resolve(cartes);
+            }
+        });
+
+
+
+    });
+}
+
 
 module.exports = app;

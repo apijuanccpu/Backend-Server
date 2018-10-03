@@ -37,6 +37,10 @@ var pdfRoutes = require('./routes/pdfview');
 var peticioRoutes = require('./routes/peticio');
 var anotacioRoutes = require('./routes/anotacio');
 var dnipeticioRoutes = require('./routes/dnipeticio');
+var cartacitacioRoutes = require('./routes/cartacitacio');
+var empresaRoutes = require('./routes/empresa');
+var docTemplateRoutes = require('./routes/docTemplate');
+
 
 //Base de dades
 mongoose.connection.openUri('mongodb://192.168.1.193:27017/SerSocDB', (err, res) => {
@@ -69,6 +73,9 @@ app.use('/pdfview', pdfRoutes);
 app.use('/peticio', peticioRoutes);
 app.use('/anotacio', anotacioRoutes);
 app.use('/dnipeticio', dnipeticioRoutes);
+app.use('/cartacitacio', cartacitacioRoutes);
+app.use('/empresa', empresaRoutes);
+app.use('/doctemplate', docTemplateRoutes);
 
 app.use('/', appRoutes);
 

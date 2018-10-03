@@ -9,7 +9,6 @@ app.get('/:tipo/:doc', (req, res, next) => {
 
     var tipo = req.params.tipo;
     var img = req.params.doc;
-
     var pathDocument = path.resolve(__dirname, `../uploads/${tipo}/${img}`);
 
     if (fs.existsSync(pathDocument)) {

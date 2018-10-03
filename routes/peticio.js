@@ -25,7 +25,7 @@ app.get('/', (req, res, next) => {
     desde = Number(desde);
 
     Peticio.find({})
-
+    .populate('empresa_energetica')
     .exec(
 
         (err, peticions) => {
@@ -61,7 +61,7 @@ app.get('/porEstado/:estado', (req, res, next) => {
     Peticio.find({
         finalitzada: estado
     })
-
+    .populate('empresa_energetica')
     .exec(
 
         (err, peticions) => {
@@ -161,6 +161,7 @@ app.get('/:id', (req, res) => {
     var id = req.params.id;
 
     Peticio.findById(id)
+    .populate('empresa_energetica')
         .exec((err, peticio) => {
 
             if (err) {
